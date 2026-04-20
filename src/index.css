@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.15; transform: scale(0.6); }
+}
+
+@keyframes flameFlicker1 {
+  0%, 100% { transform: scaleY(1) scaleX(1) rotate(-2deg); opacity: 0.9; }
+  25% { transform: scaleY(1.25) scaleX(0.82) rotate(3deg); opacity: 1; }
+  50% { transform: scaleY(0.88) scaleX(1.12) rotate(-3deg); opacity: 0.85; }
+  75% { transform: scaleY(1.1) scaleX(0.9) rotate(1deg); opacity: 0.95; }
+}
+
+@keyframes flameFlicker2 {
+  0%, 100% { transform: scaleY(1.1) scaleX(0.88) rotate(2deg); opacity: 1; }
+  33% { transform: scaleY(0.85) scaleX(1.15) rotate(-3deg); opacity: 0.8; }
+  66% { transform: scaleY(1.35) scaleX(0.78) rotate(3deg); opacity: 0.95; }
+}
+
+@keyframes flameFlicker3 {
+  0%, 100% { transform: scaleY(0.9) scaleX(1.05) rotate(1deg); opacity: 0.75; }
+  40% { transform: scaleY(1.2) scaleX(0.85) rotate(-2deg); opacity: 1; }
+  80% { transform: scaleY(0.8) scaleX(1.1) rotate(2deg); opacity: 0.8; }
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0) scale(1.2); }
+  60% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-90px) scale(0.7); }
+}
+
+@keyframes toastBounce {
+  0%, 100% { transform: translateY(0px) rotate(-0.8deg); }
+  50% { transform: translateY(-10px) rotate(0.8deg); }
+}
+
+@keyframes toastClick {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.88) rotate(2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 14px rgba(251,146,60,0.55)) drop-shadow(0 0 32px rgba(220,38,38,0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 28px rgba(251,146,60,0.95)) drop-shadow(0 0 55px rgba(220,38,38,0.65));
+  }
+}
+
+@keyframes boosterGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(251,191,36,0.5), 0 0 20px rgba(251,191,36,0.3); }
+  50% { box-shadow: 0 0 22px rgba(251,191,36,0.95), 0 0 45px rgba(251,191,36,0.55); }
+}
+
+@keyframes milestoneSlide {
+  0% { opacity: 0; transform: translateX(60px); }
+  15% { opacity: 1; transform: translateX(0); }
+  80% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(60px); }
+}
+
+.toast-idle {
+  animation: toastBounce 2.8s ease-in-out infinite, glowPulse 2.2s ease-in-out infinite;
+}
+
+.toast-clicking {
+  animation: toastClick 0.14s ease-out forwards;
+}
+
+.star {
+  animation: twinkle var(--duration) ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+.flame-1 { animation: flameFlicker1 var(--speed) ease-in-out infinite; }
+.flame-2 { animation: flameFlicker2 var(--speed) ease-in-out infinite; animation-delay: var(--delay); }
+.flame-3 { animation: flameFlicker3 var(--speed) ease-in-out infinite; animation-delay: var(--delay); }
+
+.particle {
+  animation: floatUp 0.9s ease-out forwards;
+}
+
+.booster-active {
+  animation: boosterGlow 1s ease-in-out infinite;
+}
+
+.milestone-toast {
+  animation: milestoneSlide 3s ease-in-out forwards;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(251,146,60,0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(251,146,60,0.7); }
