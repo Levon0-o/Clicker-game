@@ -1,9 +1,13 @@
+import React from 'react';
+
 interface Props {
   godMode: boolean;
   onGrantCrumbs: (amount: number) => void;
   onToggleGodMode: () => void;
   onMaxUpgrades: () => void;
   onUnlockSkins: () => void;
+  onResetPlayer: (username: string) => void;
+  onResetLeaderboard: () => void;
   onClose: () => void;
 }
 
@@ -16,14 +20,16 @@ const CRUMB_AMOUNTS = [
   { label: '+1B', value: 1_000_000_000 },
 ];
 
-export default function AdminPanel({ godMode, onGrantCrumbs, onToggleGodMode, onMaxUpgrades, onUnlockSkins, onClose }: Props) {
+export default function AdminPanel({ godMode, onGrantCrumbs, onToggleGodMode, onMaxUpgrades, onUnlockSkins, onResetPlayer, onResetLeaderboard, onClose }: Props) {
+  const [resetUsername, setResetUsername] = React.useState('');
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
     >
       <div
-        className="w-full max-w-sm rounded-2xl p-6 relative"
+        className="w-full max-w-sm rounded-2xl p-6 relative max-h-[90vh] overflow-y-auto"
         style={{
           background: 'linear-gradient(135deg, rgba(5,15,5,0.99), rgba(5,20,8,0.99))',
           border: '1px solid rgba(34,197,94,0.4)',
@@ -118,6 +124,55 @@ export default function AdminPanel({ godMode, onGrantCrumbs, onToggleGodMode, on
             }}
           >
             Unlock All Skins
+          </button>
+        </div>
+
+        <div className="mt-6 pt-4 border-t border-white/10">
+          <p className="text-white/50 text-xs uppercase tracking-widest mb-3 font-semibold">Reset Operations</p>
+
+          <div className="mb-4 space-y-2">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={resetUsername}
+                onChange={(e) => setResetUsername(e.target.value)}
+                placeholder="Enter username..."
+                className="flex-1 px-3 py-2 rounded-lg text-sm bg-white/5 border border-white/15 text-white placeholder-white/30"
+              />
+              <button
+                onClick={() => {
+                  if (resetUsername.trim()) {
+                    onResetPlayer(resetUsername.trim());
+                    setResetUsername('');
+                  }
+                }}
+                className="px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
+                style={{
+                  background: 'rgba(239,68,68,0.15)',
+                  border: '1px solid rgba(239,68,68,0.4)',
+                  color: '#ef4444',
+                }}
+              >
+                Reset
+              </button>
+            </div>
+            <p className="text-white/30 text-xs">Reset player progress by username</p>
+          </div>
+
+          <button
+            onClick={() => {
+              if (confirm('Reset entire leaderboard? This cannot be undone!')) {
+                onResetLeaderboard();
+              }
+            }}
+            className="w-full py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.02] text-left px-4"
+            style={{
+              background: 'rgba(239,68,68,0.1)',
+              border: '1px solid rgba(239,68,68,0.3)',
+              color: '#fca5a5',
+            }}
+          >
+            Reset Leaderboard
           </button>
         </div>
 

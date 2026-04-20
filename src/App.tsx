@@ -24,6 +24,7 @@ export default function App() {
     buySkin, equipSkin,
     redeemCode,
     grantCrumbs, toggleGodMode, maxAllUpgrades, unlockAllSkins,
+    resetPlayerProgress, resetLeaderboard,
   } = useGameState(user?.id ?? null);
 
   const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -234,6 +235,8 @@ export default function App() {
           onToggleGodMode={toggleGodMode}
           onMaxUpgrades={maxAllUpgrades}
           onUnlockSkins={unlockAllSkins}
+          onResetPlayer={resetPlayerProgress}
+          onResetLeaderboard={resetLeaderboard}
           onClose={() => setShowAdmin(false)}
         />
       )}

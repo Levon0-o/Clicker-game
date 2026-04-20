@@ -292,6 +292,64 @@ export function useGameState(userId: string | null) {
     setState(prev => ({ ...prev, ownedSkins: SKINS.map(s => s.id) }));
   }, []);
 
+  const resetPlayerProgress = useCallback(async (username: string) => {
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('username', username.toLowerCase().trim())
+        .maybeSingle();
+
+      if (profile) {
+        const newSaveData: SaveData = {
+          crumbs: 0,
+          totalCrumbs: 0,
+          upgrades: {},
+          usedCodes: [],
+          secretAutoBonus: 0,
+          secretClickBonus: 0,
+          ownedSkins: ['classic'],
+          equippedSkin: 'classic',
+          godMode: false,
+        };
+        await supabase.from('game_saves').upsert({ user_id: profile.id, game_data: newSaveData, updated_at: new Date().toISOString() });
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  const resetLeaderboard = useCallback(async () => {
+    try {
+      const { data: allProfiles } = await supabase.from('profiles').select('id');
+      if (allProfiles && allProfiles.length > 0) {
+        const newSaveData: SaveData = {
+          crumbs: 0,
+          totalCrumbs: 0,
+          upgrades: {},
+          usedCodes: [],
+          secretAutoBonus: 0,
+          secretClickBonus: 0,
+          ownedSkins: ['classic'],
+          equippedSkin: 'classic',
+          godMode: false,
+        };
+        const resetSaves = allProfiles.map(profile => ({
+          user_id: profile.id,
+          game_data: newSaveData,
+          updated_at: new Date().toISOString(),
+        }));
+        await supabase.from('game_saves').upsert(resetSaves);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }, []);
+
   const stats = computeStats(state.upgrades, state.secretClickBonus, state.secretAutoBonus, state.equippedSkin, state.godMode);
 
   return {
@@ -301,5 +359,6 @@ export function useGameState(userId: string | null) {
     buySkin, equipSkin,
     redeemCode,
     grantCrumbs, toggleGodMode, maxAllUpgrades, unlockAllSkins,
+    resetPlayerProgress, resetLeaderboard,
   };
 }
